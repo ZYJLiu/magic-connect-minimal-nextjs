@@ -5,6 +5,8 @@ import WalletMethods from "@/components/wallet-methods"
 import LoginPageBackground from "public/login.svg"
 import AppHeader from "@/components/app-header"
 import Spacer from "@/components/ui/spacer"
+import Wallet from "@/components/wallet"
+import Signing from "@/components/signing"
 
 export default function Home() {
   const { magic } = useMagicContext()
@@ -36,7 +38,11 @@ export default function Home() {
       {!account ? (
         <ConnectButton onClick={connect} disabled={disabled} />
       ) : (
-        <WalletMethods setAccount={setAccount} />
+        <>
+          <Wallet account={account} setAccount={setAccount} />
+          <WalletMethods setAccount={setAccount} />
+          <Signing account={account} />
+        </>
       )}
     </div>
   )
