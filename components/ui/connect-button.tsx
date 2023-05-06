@@ -1,22 +1,28 @@
-import React from "react"
-import Loading from "public/loading.svg"
-import Image from "next/image"
+import React, { useCallback } from "react"
+import { useMagicContext } from "@/context/magic-context"
+
 interface Props {
-  onClick: () => void
-  disabled: boolean
+  setAccount: React.Dispatch<React.SetStateAction<string | null>>
 }
 
-const ConnectButton = ({ onClick, disabled }: Props) => {
+const ConnectButton = ({ setAccount }: Props) => {
+  const { magic } = useMagicContext()
+
+  const connect = async () => {
+    if (!magic) return
+    try {
+      const accounts = await magic.wallet.connectWithUI()
+      console.log(accounts)
+      setAccount(accounts[0])
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <div style={{ textAlign: "center" }}>
-      <button className="connect-button" onClick={onClick} disabled={disabled}>
-        {disabled ? (
-          <div className="loadingContainer" style={{ width: "100%" }}>
-            <Image className="loading" alt="loading" src={Loading} />
-          </div>
-        ) : (
-          "Connect"
-        )}
+      <button className="connect-button" onClick={connect}>
+        Connect
       </button>
     </div>
   )

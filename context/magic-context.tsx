@@ -18,22 +18,22 @@ const MagicProvider = ({ children }: { children: React.ReactNode }) => {
   const [magicInstance, setMagicInstance] = useState<Magic | null>(null)
   const [web3Instance, setWeb3Instance] = useState<Web3 | null>(null)
 
+  const initialize = async () => {
+    const magic = new Magic("pk_live_51FA35CBAD23D818", {
+      network: {
+        rpcUrl: "https://eth-sepolia.g.alchemy.com/v2/demo",
+        chainId: 11155111,
+      },
+    })
+    const provider = await magic.wallet.getProvider()
+    const web3 = new Web3(provider)
+    setMagicInstance(magic)
+    setWeb3Instance(web3)
+  }
+
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const initializeMagic = async () => {
-        const magic = new Magic("pk_live_51FA35CBAD23D818", {
-          network: {
-            rpcUrl: "https://eth-sepolia.g.alchemy.com/v2/demo",
-            chainId: 11155111,
-          },
-        })
-        const provider = await magic.wallet.getProvider()
-        const web3 = new Web3(provider)
-        setMagicInstance(magic)
-        setWeb3Instance(web3)
-      }
-
-      initializeMagic()
+      initialize()
     }
   }, [])
 

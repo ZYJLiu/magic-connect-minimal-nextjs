@@ -16,7 +16,6 @@ const Disconnect = ({ setAccount }: Props) => {
     try {
       setDisabled(true)
       await magic.wallet.disconnect()
-      localStorage.removeItem("user")
       setDisabled(false)
       setAccount(null)
     } catch (error) {
